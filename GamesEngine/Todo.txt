@@ -1,0 +1,120 @@
+
+
+
+Directory default is C:\Users\lukpa\Downloads\GamesEngine\xcube\build
+
+TO USE ENGINE:
+
+IN CODE: 
+
+in the graphics engine cpp, define any required images at the top, then load their textures in "load images", applying their name to image name and adding them to the img array in the same slot.
+
+use the createconversationstarter function to place a conversation starter in the world, which the player can then interact with to start a conversation.
+
+make sure to write an if statement in said function to add the cutscene character names, as well as the name of the starting sprites
+
+
+
+
+important links:
+
+https://www.geeksforgeeks.org/how-to-read-data-from-csv-file-to-a-2d-array-in-cpp/ - taught me how to read csvs
+
+https://cplusplus.com/doc/tutorial/files/ - taught me how to actually open files
+
+https://www.geeksforgeeks.org/tuples-in-c/ - taught me about tuples, which makes it WAY easier to parse all the required info
+
+https://stackoverflow.com/questions/9438209/for-every-character-in-string - taught me to loop through a string
+
+https://gist.github.com/armornick/3434362 - taught me how to display images
+
+wish that I had just put the custom engine system same place as everywhere else so it could just directly connect with the others but noooo just HAD to put it in a custom place
+
+
+
+
+should probably change how line finished works to require a player input, make an extra function in engine system that gets triggered when line is finished reading in player input.
+
+TODO: 
+
+
+In cutscene start, determine a way to load the sprites, for now can just use cutscene name to determine it, but ideally should push it all into using a csv, each row being a different NPC, col 1 having starting sprite, col 2 char name, col 3 x pos, col 4 y pos, col 5 animation loop threshold. (how many frames are in an animation. This limits looping animations of one character to having the same amount of looping elements, but ah well. 
+
+Need to find a way to handle adding images to the world, since it looks like thats not a thing by default
+
+might be a thing, but looks like you need to A) create a rect for the desired item B) other stuff I chose to put on the backburner
+
+When doing animations, make all animations of one type start with same name, then have it set current sprite to animation name+number, or just animation name if not animated. Use int animationCurrentFrame to determine the current frame, then loop after animationloopthreshold is set
+
+To get function "do" to work, need to access the list of actors in order to edit it, tried to have an identical class put in the engine system, no can do, incompatible despite being identical. Looks like the best way to handle it would be to have the GAMEcpp itself call a function looping the required info into it. So that would be: 
+
+GameCPP activates function
+Game cpp loops through all characters in scene current conversation individiual, setting them to their equivalent in the engine system. Game then draws actors
+
+Figure out how to have animations work on a delay different to text. Best way would be to have "update cutscene NPC" be seperate to the actual text function, so that it can be called on a seperate delay. 
+
+With cutscene animations sorted, as well as the bug fixed, move on to making player check proximity to conversation starters, then activating cutscenes if they are nearby.
+
+After that, add audio function.
+
+After that, add an extra pair of strings to updatecutsceneinfo for a speechbox and reactionemoji. The positions of these should be in the game as a default, rather than in the custom engine, since the positions shouldnt really be moving
+
+
+need to get information about animation changes or sprite changes from the reader (engine system) to the game cpp (holder of sprite info and drawer), unsure how to proceed
+
+ON THE 21ST
+
+Finish passing all the information required for the engine system to change animations, so all that data being passed constantly every frame, looping through the information on the game cpp, and comparing it to an identical class one item at a time since the two classes arent the same. 
+(DONE 00:27 22/05/2024)
+
+After this, Figure out how to draw an image
+
+so to draw an image I need to include it. To do this, have a seperate function called which defines all the required images. I dont like having to hard code these but I cant really 
+
+
+
+
+ON THE 22ND
+
+render image and load images create images, need to loop through the list of names in the graphics engine, comparing them to see if the string is the same as the one that fits with the character name in the cutscene npc class inside the conversation starter (use .find), then set the x pos y pos to the xpos y pos of the cutscene npc class, and set them to "imagesTodraw"
+
+issue was that I was drawing changing the wrong array, needed to change to checking substring, then change the update system so it would wait for a command to finish before reading the next one. Had an issue drawing new images where I was struggling to correctly correlate when the sprites were the same, needed to use string find rather than "=="
+
+load all images, then loop through the list of names in graphics engine, compare with string to see if names are same. If names are the same, set the x and y pos to the required elements
+
+
+
+create a function in "my game", that loops through the values in graphics engine comparing the image names to search for the ones that match the required animation. When a match is found, set the image rect corresponding to it to have the correct x and y values. and set the corresponding "drawImage" array boolean to true. Once all the arrays have been looped through, use "render images, " having it check through the list and draw any with the boolean set to true. When the "my game" function is called, set all the booleans to false to be checked through again.
+
+This'll let you set the location of images as well as which image is being shown (so long as it has been loaded before)
+
+After this, create command to allow for sprite changes. If a sprite is animated, make it change to the next sprite in the sequence using the animation ints.
+
+After this, draw a basic box image below the text box (note, if not already, make sure that the text box is rendered AFTER the cutscene elements are)
+
+add a string to the tuple to allow for rendering of emoticons.
+
+
+
+
+
+If not already done, draw the required actor images, apply commands in "run commands" to allow for sprite changes. If a sprite is animated, then in the mygame cpp, have it loop through the values using the current loop time int
+
+Add the existence of a text box below the images, should be simple, can hard code the positions for it.
+add a single extra string to the tuple for emoticon things, then pass that along to be drawn too
+
+
+issues with 
+
+
+ON THE 23rd
+
+
+command function erroring where its running the readline function stuff when it SHOULD be running the do function, try to get it towork, if it takes too long, forget it and write the report. Don't forget to change the script to include the stupid easteregg thingy
+
+
+Write the report, think this text should be helpful at least :3
+
+ON THE 24TH
+
+PANIC BECAUSE YOU DIDNT FOLLOW THIS PLAN IN SOME WAY, or relax and work on narrative things. lowkey sucks theres no time for audio stuff though.
